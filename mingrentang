@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIA MVP FAMILY｜MVP 名人堂</title>
+
+  <style>
+    :root {
+      --maroon: #5f1f15;
+      --gold: #d9b36c;
+      --paper: #fbf5ea;
+      --ink: #263142;
+      --muted: #6d7685;
+      --shadow: 0 22px 60px rgba(31, 35, 43, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      touch-action: manipulation;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Serif TC", "Microsoft JhengHei", Georgia, serif;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(95,31,21,0.06) 1px, transparent 1px),
+        linear-gradient(rgba(95,31,21,0.05) 1px, transparent 1px),
+        radial-gradient(circle at 20% 10%, rgba(217,179,108,0.25), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(159,58,34,0.18), transparent 30%),
+        linear-gradient(135deg, #fffaf2 0%, #f5ead9 100%);
+      background-size: 34px 34px, 34px 34px, auto, auto, auto;
+      min-height: 100vh;
+    }
+
+    .site-shell {
+      width: min(1220px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 30px 0 58px;
+    }
+
+    .museum-hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      padding: 42px;
+      min-height: 260px;
+      background: linear-gradient(135deg, rgba(31,35,43,0.96), rgba(95,31,21,0.94));
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .museum-hero::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(217,179,108,0.42);
+      border-radius: 26px;
+      pointer-events: none;
+    }
+
+    .museum-hero::after {
+      content: "HALL OF FAME";
+      position: absolute;
+      right: -18px;
+      bottom: 8px;
+      color: rgba(255,255,255,0.055);
+      font-size: clamp(56px, 11vw, 150px);
+      font-weight: 800;
+      letter-spacing: -0.08em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 850px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(217,179,108,0.5);
+      background: rgba(217,179,108,0.12);
+      color: #f6dfaa;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .medal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 6px rgba(217,179,108,0.16);
+    }
+
+    h1 {
+      margin: 30px 0 14px;
+      font-size: clamp(42px, 7vw, 86px);
+      line-height: 0.95;
+      letter-spacing: -0.07em;
+    }
+
+    .hero-subtitle {
+      margin: 0;
+      color: rgba(255,255,255,0.78);
+      font-size: 17px;
+      line-height: 1.85;
+    }
+
+    .stats-row {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .stat-card {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(217,179,108,0.32);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .stat-card strong {
+      display: block;
+      color: #f6dfaa;
+      font-size: 34px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-card span {
+      color: rgba(255,255,255,0.76);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .control-panel {
+      margin: 26px 0 28px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 14px 35px rgba(76,45,26,0.08);
+      backdrop-filter: blur(14px);
+    }
+
+    .search {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1px solid rgba(95,31,21,0.14);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.82);
+      color: var(--ink);
+      font: inherit;
+      outline: none;
+    }
+
+    .filters {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .filter-btn {
+      padding: 11px 14px;
+      border: 1px solid rgba(95,31,21,0.16);
+      border-radius: 14px;
+      background: #fffaf3;
+      color: var(--maroon);
+      font-family: inherit;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--maroon);
+      color: white;
+      border-color: var(--maroon);
+    }
+
+    .honour-zone {
+      margin-top: 30px;
+      padding: 24px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.56);
+      border: 1px solid rgba(255,255,255,0.86);
+      box-shadow: 0 18px 42px rgba(76,45,26,0.08);
+    }
+
+    .zone-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .zone-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .zone-emblem {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff4cf 0%, #d9b36c 62%, #9f6f28 100%);
+      color: var(--maroon);
+      font-weight: 800;
+      box-shadow: 0 8px 22px rgba(159,111,40,0.28);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .zone-title h2 {
+      margin: 0;
+      color: var(--maroon);
+      font-size: 30px;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+
+    .zone-title small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .zone-count {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #f5ead9;
+      color: var(--maroon);
+      font-size: 13px;
+    }
+
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .honouree-card {
+      overflow: hidden;
+      border-radius: 22px;
+      background: var(--paper);
+      border: 1px solid rgba(217,179,108,0.32);
+      box-shadow: 0 14px 32px rgba(76,45,26,0.1);
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .honouree-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(76,45,26,0.16);
+    }
+
+    .photo-frame {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 5.5;
+      background: #ead9c8;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0;
+      transform: scale(1.02);
+      transition: opacity 0.45s ease, transform 0.35s ease;
+    }
+
+    .photo-frame img.loaded {
+      opacity: 1;
+    }
+
+    .honouree-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .photo-placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 16px;
+      color: rgba(95,31,21,0.55);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .mdrt-placeholder {
+      padding: 56px 24px;
+      border-radius: 24px;
+      border: 1px dashed rgba(95,31,21,0.24);
+      background: rgba(255,255,255,0.58);
+      text-align: center;
+      color: var(--maroon);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .nameplate {
+      padding: 13px 10px 15px;
+      text-align: center;
+      background: rgba(255,250,243,0.92);
+    }
+
+    .nameplate h3 {
+      margin: 0;
+      color: var(--maroon);
+      font-size: 21px;
+      letter-spacing: -0.03em;
+    }
+
+    .empty {
+      display: none;
+      margin-top: 26px;
+      padding: 36px;
+      border: 1px dashed rgba(95,31,21,0.22);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.58);
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(31,35,43,0.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .image-viewer {
+      position: relative;
+      width: min(520px, 92vw);
+      max-height: 90vh;
+      border-radius: 26px;
+      overflow: hidden;
+      background: #111;
+      box-shadow: 0 36px 100px rgba(0,0,0,0.42);
+    }
+
+    .image-viewer img {
+      width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      display: block;
+      background: #111;
+    }
+
+    .viewer-name {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 22px 20px;
+      text-align: center;
+      color: white;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,0.72));
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 4;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.42);
+      color: white;
+      cursor: pointer;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    footer {
+      margin-top: 36px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 1020px) {
+      .people-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .control-panel { grid-template-columns: 1fr; }
+      .filters { justify-content: flex-start; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      .site-shell {
+        width: min(100% - 28px, 1220px);
+        padding-top: 18px;
+      }
+
+      .museum-hero {
+        padding: 32px 24px;
+        min-height: 240px;
+      }
+
+      .people-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 13px;
+      }
+
+      .zone-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .zone-title h2 { font-size: 26px; }
+      .nameplate h3 { font-size: 19px; }
+      .image-viewer { width: min(430px, 94vw); }
+      .viewer-name { font-size: 26px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="site-shell">
+    <section class="museum-hero">
+      <div class="hero-inner">
+        <div class="eyebrow"><span class="medal-dot"></span>AIA MVP FAMILY</div>
+        <h1>MVP 名人堂</h1>
+        <p class="hero-subtitle">
+          匯聚不同榮譽體系下的卓越成員，以榮譽牆形式展示每一位精英的專業成就，方便快速搜尋、展示及分享。
+        </p>
+
+        <div class="stats-row">
+          <div class="stat-card"><strong id="lifeCount">0</strong><span>Life Member</span></div>
+          <div class="stat-card"><strong id="totCount">0</strong><span>TOT</span></div>
+          <div class="stat-card"><strong id="cotCount">0</strong><span>COT</span></div>
+          <div class="stat-card"><strong id="mdrtCount">0</strong><span>MDRT</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="control-panel">
+      <input class="search" id="searchInput" type="search" placeholder="搜尋姓名、英文名或榮譽" />
+
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="Life Member">Life Member</button>
+        <button class="filter-btn" data-filter="TOT">TOT</button>
+        <button class="filter-btn" data-filter="COT">COT</button>
+        <button class="filter-btn" data-filter="MDRT">MDRT</button>
+      </div>
+    </section>
+
+    <section id="hallContainer"></section>
+    <div class="empty" id="emptyState">暫時沒有找到相符的名人堂成員。</div>
+
+    <footer>© AIA MVP FAMILY Hall of Fame</footer>
+  </main>
+
+  <div class="modal" id="imageModal">
+    <div class="image-viewer">
+      <button class="close-btn" id="closeModal">×</button>
+      <img id="modalImage" src="" alt="" />
+      <div class="viewer-name" id="modalName"></div>
+    </div>
+  </div>
+
+  <script>
+    const people = [
+      { id: 'lisa-tsui', name: '徐光紅', englishName: 'Lisa Tsui', honour: 'Life Member', photo: 'images/hall/lisa-tsui.png', keywords: '徐光紅 徐光红 Lisa Tsui Life Member' },
+      { id: 'lu-jiahui', name: '呂嘉慧', englishName: 'Lu Jiahui', honour: 'Life Member', photo: 'images/hall/lu-jiahui.png', keywords: '呂嘉慧 吕嘉慧 Lu Jiahui Life Member' },
+      { id: 'gao-ming-zhu', name: '高明珠', englishName: 'Gao Mingzhu', honour: 'Life Member', photo: 'images/hall/gao-ming-zhu.png', keywords: '高明珠 Gao Mingzhu Life Member' },
+      { id: 'wong-hiu-man', name: '黃曉敏', englishName: 'Wong Hiu Man', honour: 'Life Member', photo: 'images/hall/wong-hiu-man.png', keywords: '黃曉敏 黄晓敏 Wong Hiu Man Life Member' },
+      { id: 'lai-tsz-ki', name: '黎子琪', englishName: 'Lai Tsz Ki', honour: 'Life Member', photo: 'images/hall/lai-tsz-ki.png', keywords: '黎子琪 Lai Tsz Ki Life Member' },
+      { id: 'fu-ying-na', name: '符瑛娜', englishName: 'Fu Ying Na', honour: 'Life Member', photo: 'images/hall/fu-ying-na.png', keywords: '符瑛娜 Fu Ying Na Life Member' },
+      { id: 'liu-qiaolin-life', name: '劉巧林', englishName: 'Liu Qiaolin', honour: 'Life Member', photo: 'images/hall/liu-qiaolin.png', keywords: '劉巧林 刘巧林 Liu Qiaolin Life Member' },
+      { id: 'tsui-hoi-tung', name: '徐愷彤', englishName: 'Tsui Hoi Tung', honour: 'Life Member', photo: 'images/hall/tsui-hoi-tung.png', keywords: '徐愷彤 徐恺彤 Tsui Hoi Tung Life Member' },
+      { id: 'zhou-lan', name: '周嵐', englishName: 'Zhou Lan', honour: 'Life Member', photo: 'images/hall/zhou-lan.png', keywords: '周嵐 周岚 Zhou Lan Life Member' },
+      { id: 'hui-yui', name: '許睿', englishName: 'Hui Yui', honour: 'Life Member', photo: 'images/hall/hui-yui.png', keywords: '許睿 许睿 Hui Yui Life Member' },
+      { id: 'wei-qiuyu', name: '韋秋玉', englishName: 'Wei Qiuyu', honour: 'Life Member', photo: 'images/hall/wei-qiuyu.png', keywords: '韋秋玉 韦秋玉 Wei Qiuyu Life Member' },
+
+      { id: 'li-wang-heung', name: '李宏香', englishName: 'Li Wang Heung', honour: 'TOT', photo: 'images/hall/li-wang-heung.png', keywords: '李宏香 Li Wang Heung TOT' },
+      { id: 'lam-shuk-yin', name: '林淑燕', englishName: 'Lam Shuk Yin', honour: 'TOT', photo: 'images/hall/lam-shuk-yin.png', keywords: '林淑燕 Lam Shuk Yin TOT' },
+      { id: 'liu-xurong', name: '劉旭榮', englishName: 'Liu Xurong', honour: 'TOT', photo: 'images/hall/liu-xurong.png', keywords: '劉旭榮 刘旭荣 Liu Xurong TOT' },
+      { id: 'zhang-lingqian', name: '張凌騫', englishName: 'Zhang Lingqian', honour: 'TOT', photo: 'images/hall/zhang-lingqian.png', keywords: '張凌騫 张凌骞 Zhang Lingqian TOT' },
+      { id: 'zeng-yuan', name: '曾媛', englishName: 'Zeng Yuan', honour: 'TOT', photo: 'images/hall/zeng-yuan.png', keywords: '曾媛 Zeng Yuan TOT' },
+      { id: 'liu-qiaolin-tot', name: '劉巧林', englishName: 'Liu Qiaolin', honour: 'TOT', photo: 'images/hall/liu-qiaolin-tot.png', keywords: '劉巧林 刘巧林 Liu Qiaolin TOT' },
+      { id: 'wang-lingshuang', name: '王凌霜', englishName: 'Wang Lingshuang', honour: 'TOT', photo: 'images/hall/wang-lingshuang.png', keywords: '王凌霜 Wang Lingshuang TOT' },
+      { id: 'zhang-fanchi', name: '張帆馳', englishName: 'Zhang Fanchi', honour: 'TOT', photo: 'images/hall/zhang-fanchi.png', keywords: '張帆馳 张帆驰 Zhang Fanchi TOT' },
+      { id: 'zhang-yan', name: '張燕', englishName: 'Cheung Yin', honour: 'TOT', photo: 'images/hall/zhang-yan.png', keywords: '張燕 张燕 Cheung Yin TOT' },
+      { id: 'chen-ting', name: '陳婷', englishName: 'Chen Ting', honour: 'TOT', photo: 'images/hall/chen-ting.png', keywords: '陳婷 陈婷 Chen Ting TOT' },
+      { id: 'deng-jing', name: '鄧靜', englishName: 'Deng Jing', honour: 'TOT', photo: 'images/hall/deng-jing.png', keywords: '鄧靜 邓静 Deng Jing TOT' },
+
+      { id: 'chen-bingyu', name: '陳冰瑜', englishName: 'Chen Bingyu', honour: 'COT', photo: 'images/hall/chen-bingyu.png', keywords: '陳冰瑜 陈冰瑜 Chen Bingyu COT' },
+      { id: 'chen-zhenlong', name: '陳振龍', englishName: 'Chen Zhenlong', honour: 'COT', photo: 'images/hall/chen-zhenlong.png', keywords: '陳振龍 陈振龙 Chen Zhenlong COT' },
+      { id: 'li-jiao', name: '李嬌', englishName: 'Li Jiao', honour: 'COT', photo: 'images/hall/li-jiao.png', keywords: '李嬌 李娇 Li Jiao COT' },
+      { id: 'liang-huazhen', name: '梁華珍', englishName: 'Liang Huazhen', honour: 'COT', photo: 'images/hall/liang-huazhen.png', keywords: '梁華珍 梁华珍 Liang Huazhen COT' },
+      { id: 'liu-xurong-cot', name: '劉旭榮', englishName: 'Liu Xurong', honour: 'COT', photo: 'images/hall/liu-xurong-cot.png', keywords: '劉旭榮 刘旭荣 Liu Xurong COT' },
+      { id: 'ma-li', name: '馬莉', englishName: 'Ma Li', honour: 'COT', photo: 'images/hall/ma-li.png', keywords: '馬莉 马莉 Ma Li COT' },
+      { id: 'shen-yang', name: '申揚', englishName: 'Shen Yang', honour: 'COT', photo: 'images/hall/shen-yang.png', keywords: '申揚 申扬 Shen Yang COT' },
+      { id: 'yang-weiwei', name: '楊威巍', englishName: 'Yang Weiwei', honour: 'COT', photo: 'images/hall/yang-weiwei.png', keywords: '楊威巍 杨威巍 Yang Weiwei COT' },
+      { id: 'leina', name: '雷娜', englishName: 'Lei Na', honour: 'COT', photo: 'images/hall/lei-na.png', keywords: '雷娜 Lei Na COT' },
+      { id: 'li-meng', name: '李夢', englishName: 'Li Meng', honour: 'COT', photo: 'images/hall/li-meng.png', keywords: '李夢 李梦 Li Meng COT' },
+      { id: 'ni-lan', name: '倪蘭', englishName: 'Ni Lan', honour: 'COT', photo: 'images/hall/ni-lan.png', keywords: '倪蘭 倪兰 Ni Lan COT' },
+      { id: 'zhang-shanru', name: '張善茹', englishName: 'Zhang Shanru', honour: 'COT', photo: 'images/hall/zhang-shanru.png', keywords: '張善茹 张善茹 Zhang Shanru COT' },
+      { id: 'zhu-yanping', name: '朱燕萍', englishName: 'Zhu Yanping', honour: 'COT', photo: 'images/hall/zhu-yanping.png', keywords: '朱燕萍 Zhu Yanping COT' },
+      { id: 'ma-yanli', name: '馬艷麗', englishName: 'Ma Yanli', honour: 'COT', photo: 'images/hall/ma-yanli.png', keywords: '馬艷麗 马艳丽 Ma Yanli COT' },
+      { id: 'sun-yupeng', name: '孫育鵬', englishName: 'Sun Yupeng', honour: 'COT', photo: 'images/hall/sun-yupeng.png', keywords: '孫育鵬 孙育鹏 Sun Yupeng COT' }
+    ];
+
+    const honourOrder = ['Life Member', 'TOT', 'COT', 'MDRT'];
+
+    const hallContainer = document.getElementById('hallContainer');
+    const searchInput = document.getElementById('searchInput');
+    const emptyState = document.getElementById('emptyState');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    const imageModal = document.getElementById('imageModal');
+    const closeModal = document.getElementById('closeModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalName = document.getElementById('modalName');
+
+    const lifeCount = document.getElementById('lifeCount');
+    const totCount = document.getElementById('totCount');
+    const cotCount = document.getElementById('cotCount');
+    const mdrtCount = document.getElementById('mdrtCount');
+
+    let activeFilter = 'all';
+
+    function updateCounts() {
+      lifeCount.textContent = people.filter(person => person.honour === 'Life Member').length;
+      totCount.textContent = people.filter(person => person.honour === 'TOT').length;
+      cotCount.textContent = people.filter(person => person.honour === 'COT').length;
+      mdrtCount.textContent = people.filter(person => person.honour === 'MDRT').length;
+    }
+
+    function getEmblemText(honour) {
+      if (honour === 'Life Member') return 'LIFE';
+      return honour;
+    }
+
+    function createPersonCard(person) {
+      return `
+        <article class="honouree-card" data-id="${person.id}">
+          <div class="photo-frame">
+            <div class="photo-placeholder">${person.name}<br>照片補充中</div>
+            <img src="${person.photo}" alt="${person.name}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'" />
+          </div>
+          <div class="nameplate">
+            <h3>${person.name}</h3>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderHall(list) {
+      hallContainer.innerHTML = '';
+
+      honourOrder.forEach(honour => {
+        const group = list.filter(person => person.honour === honour);
+        if (!group.length && honour !== 'MDRT') return;
+
+        const section = document.createElement('section');
+        section.className = 'honour-zone';
+
+        const content = honour === 'MDRT' && group.length === 0
+          ? `<div class="mdrt-placeholder">照片補充中，敬請期待……</div>`
+          : `<div class="people-grid">${group.map(createPersonCard).join('')}</div>`;
+
+        section.innerHTML = `
+          <div class="zone-header">
+            <div class="zone-title">
+              <div class="zone-emblem">${getEmblemText(honour)}</div>
+              <div>
+                <h2>${honour}</h2>
+                <small>Honour Gallery</small>
+              </div>
+            </div>
+            <span class="zone-count">${group.length} Members</span>
+          </div>
+          ${content}
+        `;
+
+        hallContainer.appendChild(section);
+      });
+
+      emptyState.style.display = list.length || activeFilter === 'MDRT' ? 'none' : 'block';
+
+      document.querySelectorAll('.honouree-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const person = people.find(item => item.id === card.dataset.id);
+          if (person) openImageModal(person);
+        });
+      });
+    }
+
+    function applyFilters() {
+      const term = searchInput.value.trim().toLowerCase();
+
+      const filtered = people.filter(person => {
+        const searchableText = `
+          ${person.name}
+          ${person.englishName}
+          ${person.honour}
+          ${person.keywords}
+        `.toLowerCase();
+
+        const matchSearch = !term || searchableText.includes(term);
+        const matchFilter = activeFilter === 'all' || person.honour === activeFilter;
+
+        return matchSearch && matchFilter;
+      });
+
+      renderHall(filtered);
+    }
+
+    function openImageModal(person) {
+      modalImage.src = person.photo;
+      modalImage.alt = person.name;
+      modalName.textContent = person.name;
+      imageModal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeImageModal() {
+      imageModal.classList.remove('show');
+      document.body.style.overflow = '';
+      modalImage.removeAttribute('src');
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        activeFilter = button.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    closeModal.addEventListener('click', closeImageModal);
+
+    imageModal.addEventListener('click', event => {
+      if (event.target === imageModal) closeImageModal();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeImageModal();
+    });
+
+    updateCounts();
+    renderHall(people);
+  </script>
+</body>
+</html>
