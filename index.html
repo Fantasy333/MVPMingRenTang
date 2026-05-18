@@ -581,6 +581,13 @@
       if (honour === 'Life Member') return 'LIFE';
       return honour;
     }
+    function getHonourFullName(honour) {
+  if (honour === 'Life Member') return 'Lifetime Honour Member';
+  if (honour === 'TOT') return 'Top of the Table';
+  if (honour === 'COT') return 'Court of the Table';
+  if (honour === 'MDRT') return 'Million Dollar Round Table';
+  return honour;
+}
 
     function createPersonCard(person) {
       return `
@@ -616,7 +623,7 @@
               <div class="zone-emblem">${getEmblemText(honour)}</div>
               <div>
                 <h2>${honour}</h2>
-                <small>Honour Gallery</small>
+  <small>${getHonourFullName(honour)}</small>
               </div>
             </div>
             <span class="zone-count">${group.length} Members</span>
